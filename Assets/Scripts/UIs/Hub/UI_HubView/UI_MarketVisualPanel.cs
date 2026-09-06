@@ -90,7 +90,10 @@ public sealed class UI_MarketVisualPanel : MonoBehaviour
 
         bool isMaxLevel = marketData.CurrentLevel >= MarketManager.MaxMarketLevel;
         bool areAllMissionsCompleted = market.LevelMissionProgress.AreAllMissionsClaimed;
-        bool isFinalLevelComplete = isMaxLevel && areAllMissionsCompleted;
+        bool isFinalLevelComplete = isMaxLevel
+            && areAllMissionsCompleted
+            && levelData.IncomeGoal > 0
+            && marketData.TotalIncome >= levelData.IncomeGoal;
         bool canPromote = !isMaxLevel && market.CanPromote;
         bool showRewardButton = !isFinalLevelComplete
             && !areAllMissionsCompleted
@@ -156,7 +159,7 @@ public sealed class UI_MarketVisualPanel : MonoBehaviour
             }
 
             if (salesAmountText != null)
-                salesAmountText.text = "MAX / MAX";
+                salesAmountText.text = $"{marketData.TotalIncome:N0} / {levelData.IncomeGoal:N0}";
 
             if (missionRewardPanel != null)
                 missionRewardPanel.SetActive(false);
