@@ -15,7 +15,7 @@ MonoBehaviour:
   id: harvest_truck_speed
   displayName: "\uD2B8\uB799\uD130 \uC18D\uB3C4"
   displayIcon: {fileID: 0}
-  requiredCosts: c800000090010000ee020000b80b0000
+  requiredCosts: 6400000090010000ee020000b80b0000
   maxLevel: 2
   requiredMarketLevel: 01000000020000000300000004000000
   targetUpgrade: 3

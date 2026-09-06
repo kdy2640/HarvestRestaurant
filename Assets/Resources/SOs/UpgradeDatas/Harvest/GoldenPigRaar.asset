@@ -15,7 +15,7 @@ MonoBehaviour:
   id: harvest_golden_pig_radar
   displayName: "\uD669\uAE08\uB3FC\uC9C0 \uB808\uC774\uB354"
   displayIcon: {fileID: 0}
-  requiredCosts: 960000002c010000f4010000dc050000
+  requiredCosts: 320000002c010000f4010000dc050000
   maxLevel: 4
   requiredMarketLevel: 01000000020000000300000004000000
   targetUpgrade: 7

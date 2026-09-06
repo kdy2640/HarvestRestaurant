@@ -15,7 +15,7 @@ MonoBehaviour:
   id: harvest_saw_size
   displayName: "\uD1B1\uB0A0 \uD06C\uAE30"
   displayIcon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  requiredCosts: 960000002c010000f4010000dc050000
+  requiredCosts: 320000002c010000f4010000dc050000
   maxLevel: 4
   requiredMarketLevel: 01000000020000000300000004000000
   targetUpgrade: 0
