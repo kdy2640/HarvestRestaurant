@@ -15,7 +15,7 @@ MonoBehaviour:
   id: harvest_saw_sharpness
   displayName: "\uD1B1\uB0A0 \uB0A0\uCE74\uB85C\uC6C0"
   displayIcon: {fileID: 0}
-  requiredCosts: 960000002c010000f4010000dc050000
+  requiredCosts: 320000002c010000f4010000dc050000
   maxLevel: 4
   requiredMarketLevel: 01000000020000000300000004000000
   targetUpgrade: 2
