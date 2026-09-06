@@ -31,7 +31,6 @@ public class TipBox : MonoBehaviour
         GameManager.Instance.Service.ResultBuilder.RecordTip(collectedTipAmount);
         tipAmount = 0;
         UpdateUI();
-        VFXOn();
     }
 
     private void UpdateUI()
@@ -51,7 +50,7 @@ public class TipBox : MonoBehaviour
         }
     }
 
-    private void VFXOn()
+    public void VFXOn()
     {
         Instantiate(tipGetVfxPrefab, tipButton.transform.position, Quaternion.identity);
     }

@@ -3903,6 +3903,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85829aa168825a949baa18f3a8785bd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Seat
+--- !u!1 &479044425
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 479044427}
+  - component: {fileID: 479044426}
+  m_Layer: 0
+  m_Name: ServerLowStart
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &479044426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479044425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef0f2767978e4754ca78de46822cb414, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Waypoint
+  neighbors:
+  - {fileID: 1021369103}
+  - {fileID: 986849827}
+  Parent: {fileID: 0}
+  GCost: 0
+  HCost: 0
+--- !u!4 &479044427
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479044425}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.5, y: 0, z: 1.18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1402263197}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &482166686
 GameObject:
   m_ObjectHideFlags: 0
@@ -4398,6 +4448,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 539080040}
   m_CullTransparentMesh: 1
+--- !u!1 &541165445
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 541165446}
+  - component: {fileID: 541165447}
+  m_Layer: 0
+  m_Name: Server2_Fix
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &541165446
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541165445}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.716, y: 0, z: 2.11}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1402263197}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &541165447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541165445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef0f2767978e4754ca78de46822cb414, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Waypoint
+  neighbors:
+  - {fileID: 2145610710}
+  - {fileID: 986849827}
+  - {fileID: 1816218559}
+  Parent: {fileID: 0}
+  GCost: 0
+  HCost: 0
 --- !u!1 &549523662
 GameObject:
   m_ObjectHideFlags: 0
@@ -6102,6 +6203,9 @@ MonoBehaviour:
   - {fileID: 1816218559}
   - {fileID: 1021369103}
   - {fileID: 115457972}
+  - {fileID: 2145610710}
+  - {fileID: 1458311012}
+  - {fileID: 479044426}
   Parent: {fileID: 0}
   GCost: 0
   HCost: 0
@@ -6402,6 +6506,7 @@ MonoBehaviour:
   - {fileID: 508999904}
   - {fileID: 2136347657}
   - {fileID: 2130266545}
+  - {fileID: 479044426}
   Parent: {fileID: 0}
   GCost: 0
   HCost: 0
@@ -7139,6 +7244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b2880c600dd2cf48ba5dfa326ec17fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TipButton
+  tipBox: {fileID: 1672978792}
   amountText: {fileID: 275047177}
 --- !u!114 &1104042495
 MonoBehaviour:
@@ -8872,6 +8978,7 @@ MonoBehaviour:
   - {fileID: 185433010}
   - {fileID: 16186689}
   - {fileID: 691370146}
+  - {fileID: 6163960}
   Parent: {fileID: 0}
   GCost: 0
   HCost: 0
@@ -8941,7 +9048,10 @@ Transform:
   - {fileID: 2051378716}
   - {fileID: 1816218560}
   - {fileID: 2145610709}
+  - {fileID: 541165446}
   - {fileID: 986849828}
+  - {fileID: 479044427}
+  - {fileID: 1458311013}
   - {fileID: 819953916}
   - {fileID: 508999905}
   - {fileID: 1021369104}
@@ -9406,6 +9516,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c659f6403bbcf994791715ec50497e6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ServePoint
+--- !u!1 &1458311011
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1458311013}
+  - component: {fileID: 1458311012}
+  m_Layer: 0
+  m_Name: KitchenContact
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1458311012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1458311011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef0f2767978e4754ca78de46822cb414, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Waypoint
+  neighbors:
+  - {fileID: 986849827}
+  Parent: {fileID: 0}
+  GCost: 0
+  HCost: 0
+--- !u!4 &1458311013
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1458311011}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.03, y: 0, z: 2.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1402263197}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1468416766
 GameObject:
   m_ObjectHideFlags: 0
@@ -11583,6 +11742,7 @@ MonoBehaviour:
   - {fileID: 1181164536}
   - {fileID: 2145610710}
   - {fileID: 168586871}
+  - {fileID: 541165447}
   Parent: {fileID: 0}
   GCost: 0
   HCost: 0
@@ -13557,6 +13717,7 @@ MonoBehaviour:
   neighbors:
   - {fileID: 1816218559}
   - {fileID: 1693754218}
+  - {fileID: 986849827}
   Parent: {fileID: 0}
   GCost: 0
   HCost: 0
