@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 
 
@@ -175,7 +174,8 @@ public class AIMove : MonoBehaviour
 
         if (currentPath == null)
         {
-            Debug.Log("Path not found");
+            Debug.Log("Path not found : " + destination);
+            
             return;
         }
 
