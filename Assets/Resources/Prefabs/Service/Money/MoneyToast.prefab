@@ -321,7 +321,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8873869859756436770, guid: 2f1355be09e18af49898544855372b9d, type: 3}
       propertyPath: m_text
-      value: +50
+      value: +5055
       objectReference: {fileID: 0}
     - target: {fileID: 8873869859756436770, guid: 2f1355be09e18af49898544855372b9d, type: 3}
       propertyPath: m_fontSize
@@ -351,6 +351,10 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: -4509379148335439522, guid: 160a11fd5c845864889db6cc3f668f77, type: 2}
+    - target: {fileID: 8873869859756436770, guid: 2f1355be09e18af49898544855372b9d, type: 3}
+      propertyPath: m_TextWrappingMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8873869859756436770, guid: 2f1355be09e18af49898544855372b9d, type: 3}
       propertyPath: m_HorizontalAlignment
       value: 1
