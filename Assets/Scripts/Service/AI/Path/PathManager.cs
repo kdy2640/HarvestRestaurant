@@ -7,7 +7,6 @@ public class PathManager : MonoBehaviour
     [SerializeField] private GraphManager graph;
     private Dictionary<(Waypoint, Waypoint), List<Waypoint>> pathTable
         = new();
-
     private AStarPathFinder finder;
 
 
@@ -42,6 +41,13 @@ public class PathManager : MonoBehaviour
     {
         if (pathTable.TryGetValue((start, goal), out var path))
         {
+            if(path == null)
+            {
+                Debug.Log("Path Null Inside");
+                Debug.Log(start + "-" + goal + " : GetPath (Waypoint)Fail");
+                Debug.Log("PathTableCount : " + pathTable.Count);
+            }
+
             return path;
         }
         Debug.Log(start + "-" + goal + " : GetPath (Waypoint)Fail");
