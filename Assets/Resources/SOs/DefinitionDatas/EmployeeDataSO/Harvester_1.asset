@@ -28,8 +28,7 @@ MonoBehaviour:
     effect: 
   level3Skill:
     skillName: "\uC2F9 \uBC00\uC5B4\uBC84\uB9B4\uAC8C\uC694"
-    description: "[\uC561\uD2F0\uBE0C] \uD68C\uC804\uD1B1 \uACFC\uBD80\uD558 \uC0AC\uC6A9
-      \uAC00\uB2A5"
+    description: "[\uC561\uD2F0\uBE0C] \uD68C\uC804\uD1B1 \uACFC\uBD80\uD558 \uC0AC\uC6A9 \uAC00\uB2A5 (\uD69F\uC218 \uC81C\uD55C \uC5C6\uC74C)"
     effect: 
   level5Skill:
     skillName: "\uBCBC\uC5D0\uC11C \uACE0\uAE30\uB97C!"

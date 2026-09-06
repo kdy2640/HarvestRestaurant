@@ -6,6 +6,7 @@ using UnityEngine;
 public sealed class CropCutter : MonoBehaviour
 {
     private const float CutterOffset = 0.7f;
+    private const float OverloadDamageBoostAmount = 0.3f;
 
     [SerializeField] private GridChunkHandler gridChunkHandler;
     [SerializeField] private CutterViewer cutterViewer;
@@ -24,6 +25,7 @@ public sealed class CropCutter : MonoBehaviour
     private float baseDamage;
     private float rangeBoostAmount;
     private float damageBoostAmount;
+    private bool isOverloadActive;
 
     public bool IsCutting => Time.time <= cuttingUntilTime;
     public float Range => cuttingRange;
@@ -112,6 +114,21 @@ public sealed class CropCutter : MonoBehaviour
     {
         damageBoostAmount += amount;
         damage = baseDamage * (1f + damageBoostAmount);
+        RefreshBuffVisual();
+    }
+
+    public void SetOverloadActive(bool isActive)
+    {
+        if (isOverloadActive == isActive)
+            return;
+
+        isOverloadActive = isActive;
+        ApplyDamageBoost(isActive ? OverloadDamageBoostAmount : -OverloadDamageBoostAmount);
+    }
+
+    private void RefreshBuffVisual()
+    {
+        cutterViewer.SetBuffTint(isOverloadActive || damageBoostAmount > 0f);
     }
 
     private void ApplyRange(float range)

@@ -9,7 +9,7 @@ public sealed class HarvestEmployeeResolver : MonoBehaviour
 
     private const float CutterRangeMultiplier = 1.5f;
     private const float CutterRangeBuffDuration = 5f;
-    private const float CutterOverloadCoolDown = 5f;
+    private const float CutterOverloadCoolDown = 10f;
     private const float ChargeDuration = 1.5f;
     private const float ChargeDamageMultiplier = 100f;
     private const float ChargeCoolDown = 8f;
@@ -27,12 +27,13 @@ public sealed class HarvestEmployeeResolver : MonoBehaviour
     private float harvester2OriginalRange;
     private TractorController tractorController;
     private CropCutter tractorCutter;
+    private Coroutine cutterRangeBuffCoroutine;
     private Coroutine chargeCoroutine;
     private float extraYieldChance;
     private float mainCropMeatChance;
     private float vegetableMeatChance;
     private float chargeCoolDownMultiplier;
-    private int cutterOverloadUseCount;
+    private float cutterOverloadCoolDownMultiplier;
     private int harvestedCropCount;
     private bool cutterOverloadUnlocked;
     private bool chargeUnlocked;
@@ -49,7 +50,7 @@ public sealed class HarvestEmployeeResolver : MonoBehaviour
         tractorController = GetComponent<TractorController>();
         tractorCutter = tractorController.Cutter;
 
-        skills[0] = new SkillBase(CutterOverloadCoolDown, false, 0);
+        skills[0] = new SkillBase(CutterOverloadCoolDown, false);
         skills[1] = new SkillBase(ChargeCoolDown, false);
 
         skills[0].SetExecute(ExecuteCutterRangeBuff);
@@ -86,17 +87,14 @@ public sealed class HarvestEmployeeResolver : MonoBehaviour
             + GetReachedUpgradeCount(EmployeeType.Harvester_2, 2, 5)
             + GetReachedUpgradeCount(EmployeeType.Harvester_3, 2, 5));
 
-        cutterOverloadUnlocked =
-            HasUpgrade(EmployeeType.Harvester_1, 3)
-            || HasUpgrade(EmployeeType.Harvester_2, 3);
-        cutterOverloadUseCount =
-            (HasUpgrade(EmployeeType.Harvester_1, 3) ? 1 : 0)
-            + (HasUpgrade(EmployeeType.Harvester_2, 3) ? 1 : 0)
-            + (HasUpgrade(EmployeeType.Harvester_2, 5) ? 1 : 0);
+        cutterOverloadUnlocked = HasUpgrade(EmployeeType.Harvester_1, 3);
+        cutterOverloadCoolDownMultiplier = HasUpgrade(EmployeeType.Harvester_2, 5)
+            ? 0.5f
+            : 1f;
 
-        mainCropMeatChance = HasUpgrade(EmployeeType.Harvester_1, 5)
-            ? 0.10f
-            : 0f;
+        mainCropMeatChance =
+            (HasUpgrade(EmployeeType.Harvester_1, 5) ? 0.10f : 0f)
+            + (HasUpgrade(EmployeeType.Harvester_2, 3) ? 0.10f : 0f);
         vegetableMeatChance = HasUpgrade(EmployeeType.Harvester_2, 1)
             ? 0.10f
             : 0f;
@@ -111,9 +109,8 @@ public sealed class HarvestEmployeeResolver : MonoBehaviour
     private void ConfigureSkills()
     {
         skills[0].Configure(
-            CutterOverloadCoolDown,
-            cutterOverloadUnlocked,
-            cutterOverloadUseCount);
+            CutterOverloadCoolDown * cutterOverloadCoolDownMultiplier,
+            cutterOverloadUnlocked);
         skills[1].Configure(
             ChargeCoolDown * chargeCoolDownMultiplier,
             chargeUnlocked);
@@ -313,7 +310,14 @@ public sealed class HarvestEmployeeResolver : MonoBehaviour
 
     private void ExecuteCutterRangeBuff()
     {
-        StartCoroutine(CutterRangeBuff());
+        if (cutterRangeBuffCoroutine != null)
+        {
+            StopCoroutine(cutterRangeBuffCoroutine);
+            tractorCutter.ApplyRangeBoost(1f - CutterRangeMultiplier);
+            SetCutterTargetRanges(1f);
+        }
+
+        cutterRangeBuffCoroutine = StartCoroutine(CutterRangeBuff());
     }
 
     private IEnumerator CutterRangeBuff()
@@ -325,20 +329,26 @@ public sealed class HarvestEmployeeResolver : MonoBehaviour
 
         tractorCutter.ApplyRangeBoost(1f - CutterRangeMultiplier);
         SetCutterTargetRanges(1f);
+        cutterRangeBuffCoroutine = null;
     }
 
     private void SetCutterTargetRanges(float multiplier)
     {
+        bool isOverloadActive = multiplier > 1f;
+        tractorCutter.SetOverloadActive(isOverloadActive);
+
         if (harvester1Cutter != null
-            && harvester1Cutter.gameObject.activeInHierarchy)
+            && (harvester1Cutter.gameObject.activeInHierarchy || !isOverloadActive))
         {
+            harvester1Cutter.SetOverloadActive(isOverloadActive);
             harvester1Cutter.SetTargetRange(
                 harvester1OriginalRange * multiplier);
         }
 
         if (harvester2Cutter != null
-            && harvester2Cutter.gameObject.activeInHierarchy)
+            && (harvester2Cutter.gameObject.activeInHierarchy || !isOverloadActive))
         {
+            harvester2Cutter.SetOverloadActive(isOverloadActive);
             harvester2Cutter.SetTargetRange(
                 harvester2OriginalRange * multiplier);
         }
@@ -373,6 +383,14 @@ public sealed class HarvestEmployeeResolver : MonoBehaviour
 
     private void OnDisable()
     {
+        if (cutterRangeBuffCoroutine != null)
+        {
+            StopCoroutine(cutterRangeBuffCoroutine);
+            tractorCutter.ApplyRangeBoost(1f - CutterRangeMultiplier);
+            SetCutterTargetRanges(1f);
+            cutterRangeBuffCoroutine = null;
+        }
+
         if (isGrindSFXPlaying)
         {
             isGrindSFXPlaying = false;

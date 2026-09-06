@@ -11,6 +11,7 @@ public class DrinkZone : MonoBehaviour
 
     private float spendDrinkFillAmount = 1.0f;
     private GroceryAmount groceryAmount = new();
+    private bool isFilling;
 
     public Transform DrinkSpot => drinkSpot;
 
@@ -26,7 +27,9 @@ public class DrinkZone : MonoBehaviour
     private void OnEnable()
     {
         drinkFillButton.Filled += ApplyFill;
+        GameManager.Instance.StockManager.SubscribeStockDataChange(OnStockDataChanged);
         UpdateDrinkSpendUI();
+        OnStockDataChanged();
     }
 
     private void UpdateDrinkSpendUI()
@@ -43,7 +46,7 @@ public class DrinkZone : MonoBehaviour
     {
         spendDrinkFillAmount -= 0.25f;
         UpdateDrinkSpendUI();
-        if (spendDrinkFillAmount <= 0.0f&&CanFillDrink())
+        if (spendDrinkFillAmount <= 0.0f && !isFilling && CanFillDrink())
         {
             FillDrink();
         }
@@ -65,17 +68,27 @@ public class DrinkZone : MonoBehaviour
     {
         groceryAmount.grocery = GroceryType.Grape;
         groceryAmount.amount = 1;
-        if (GameManager.Instance.StockManager.TryConsumeGrocery(groceryAmount))
+        // 재료 소비 중 발생하는 재고 변경 알림에서 중복 충전을 막는다.
+        isFilling = true;
+        if (!GameManager.Instance.StockManager.TryConsumeGrocery(groceryAmount))
         {
+            isFilling = false;
             return;
         }
-        drinkFillButton.gameObject.SetActive (true);
-        backGroundImage.gameObject.SetActive (true);
+        drinkFillButton.gameObject.SetActive(true);
+        backGroundImage.gameObject.SetActive(true);
+    }
+
+    private void OnStockDataChanged()
+    {
+        if (spendDrinkFillAmount <= 0.0f && !isFilling)
+            FillDrink();
     }
 
     private void ApplyFill()
     {
         spendDrinkFillAmount = 1.0f;
+        isFilling = false;
         drinkFillImg.fillAmount = spendDrinkFillAmount;
         backGroundImage.gameObject.SetActive(false);
         GameManager.Instance.Utility.Audio.PlaySFX(SFXType.Service_DrinkRefill);
@@ -84,5 +97,6 @@ public class DrinkZone : MonoBehaviour
     private void OnDisable()
     {
         drinkFillButton.Filled -= ApplyFill;
+        GameManager.Instance.StockManager.UnsubscribeStockDataChange(OnStockDataChanged);
     }
 }

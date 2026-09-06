@@ -28,14 +28,13 @@ MonoBehaviour:
       \uD2F0\uC5B4\uC758 \uC721\uB958 1\uAC1C \uC81C\uACF5"
     effect: 
   level3Skill:
-    skillName: "\uC2F9 \uBC00\uC5B4\uBC84\uB9B4\uAC8C\uC694"
-    description: "[\uC561\uD2F0\uBE0C] \uD68C\uC804\uD1B1 \uACFC\uBD80\uD558 \uC0AC\uC6A9
-      \uAC00\uB2A5"
+    skillName: "\uBCBC\uC5D0\uC11C \uACE0\uAE30\uB97C!"
+    description: "\uC8FC \uC791\uBB3C \uC218\uD655 \uC2DC 10% \uD655\uB960\uB85C
+      \uAC19\uC740 \uD2F0\uC5B4\uC758 \uC721\uB958 1\uAC1C \uC81C\uACF5"
     effect: 
   level5Skill:
     skillName: "\uD55C \uBC88\uC740 \uC544\uC26C\uC6B0\uB2C8\uAE4C"
-    description: "\uD68C\uC804\uD1B1 \uACFC\uBD80\uD558 \uC0AC\uC6A9 \uD69F\uC218
-      +1"
+    description: "\uD68C\uC804\uD1B1 \uACFC\uBD80\uD558 \uCFE8\uD0C0\uC784 50% \uAC10\uC18C"
     effect: 
   level2Effect: 5%
   level3Effect: 10%

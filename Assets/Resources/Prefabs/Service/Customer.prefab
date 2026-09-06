@@ -437,10 +437,11 @@ MonoBehaviour:
   autoServeImg: {fileID: 2043746497527972759}
   moneyToast: {fileID: 7393969721749045989, guid: 7ecd9c60a0d91b14f978facab321f513, type: 3}
   toastMessage: {fileID: 845564292351846773}
+  warningMessage: {fileID: 0}
   dirtyChance: 0.2
   runChance: 0.2
   tipChance: 0.1
-  drinkChance: 0.2
+  drinkChance: 0.8
   lifecycleProgress: 0
   SeatDirty: 0
   IsAutoServed: 0
