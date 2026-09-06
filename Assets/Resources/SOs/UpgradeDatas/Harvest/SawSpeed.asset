@@ -15,7 +15,7 @@ MonoBehaviour:
   id: harvest_saw_speed
   displayName: "\uD1B1\uB0A0 \uD68C\uC804\uC18D\uB3C4"
   displayIcon: {fileID: 0}
-  requiredCosts: 640000002c010000f4010000e8030000dc050000
+  requiredCosts: 320000002c010000f4010000e8030000dc050000
   maxLevel: 5
   requiredMarketLevel: 0000000001000000020000000300000004000000
   targetUpgrade: 1
