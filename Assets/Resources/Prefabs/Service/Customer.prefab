@@ -441,7 +441,7 @@ MonoBehaviour:
   dirtyChance: 0.2
   runChance: 0.2
   tipChance: 0.1
-  drinkChance: 0.8
+  drinkChance: 0.2
   lifecycleProgress: 0
   SeatDirty: 0
   IsAutoServed: 0
