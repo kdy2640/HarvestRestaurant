@@ -105,6 +105,7 @@ public class CustomerSpawner : MonoBehaviour
         if (!intervalCalculater.TryGetInterval(
             tableManager.WaitingCount,
             usableSeatCount,
+            activeCustomers.Count,
             out float arrivalInterval))
         {
             return;

@@ -82,14 +82,15 @@ public sealed class CustomerIntervalCalculater
     public bool TryGetInterval(
         int waitingCustomerCount,
         int usableSeatCount,
+        int activeCustomerCount,
         out float interval)
     {
         // 아직 완료된 손님이 없거나 첫 샘플이 나오기 전에는 실제 처리율을 알 수 없다.
-        // 초기 손님 외에는 실제 처리율이 계산될 때까지 추가로 투입하지 않는다.
+        // 남은 손님이 없으면 최대 간격으로 한 명을 투입해 영업을 이어간다.
         if (smoothedRuntimeThroughput <= 0f)
         {
-            interval = 0f;
-            return false;
+            interval = maxInterval;
+            return activeCustomerCount == 0;
         }
 
         // 적정 대기열은 사용 가능한 좌석 수의 절반으로 잡는다.
