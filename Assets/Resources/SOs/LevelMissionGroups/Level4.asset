@@ -16,6 +16,7 @@ MonoBehaviour:
   marketDescription: "모두가 인정하는 냥슐랭 마스터!"
   missions:
   - conditionType: 1
+    menuTarget: 2
     condition:
       rid: 4385387211786289333
     rewardType: 2
@@ -24,6 +25,7 @@ MonoBehaviour:
     title: "\uB4DC\uB9C1\uD06C \uBC14 \uAD6C\uB9E4"
     description: 
   - conditionType: 6
+    menuTarget: 0
     condition:
       rid: 4385387211786289335
     rewardType: 1
@@ -32,6 +34,7 @@ MonoBehaviour:
     title: "\uC625\uC218\uC218 \uB0A9\uD488"
     description: 
   - conditionType: 1
+    menuTarget: 3
     condition:
       rid: 4385387211786289337
     rewardType: 1
@@ -40,6 +43,7 @@ MonoBehaviour:
     title: "\uB18D\uC0AC \uC9C1\uC6D0 3 5\uB808\uBCA8 \uB2EC\uC131"
     description: 
   - conditionType: 1
+    menuTarget: 2
     condition:
       rid: 4385387211786289339
     rewardType: 2
@@ -48,6 +52,7 @@ MonoBehaviour:
     title: "5\uB808\uBCA8 \uD14C\uC774\uBE14 5\uAC1C \uBCF4\uC720"
     description: 
   - conditionType: 1
+    menuTarget: 2
     condition:
       rid: 4385387211786289341
     rewardType: 1

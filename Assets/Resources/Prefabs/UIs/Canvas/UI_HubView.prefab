@@ -3051,10 +3051,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2112046305335370039, guid: fea1b48175f72e34f9cef1f490077d07, type: 3}
-      propertyPath: m_fontSizeMin
-      value: 15
-      objectReference: {fileID: 0}
     - target: {fileID: 4553723885990333421, guid: fea1b48175f72e34f9cef1f490077d07, type: 3}
       propertyPath: m_Name
       value: UI_MarketVisualPanel
@@ -3073,10 +3069,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7090288739703552320, guid: fea1b48175f72e34f9cef1f490077d07, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8083672251290739299, guid: fea1b48175f72e34f9cef1f490077d07, type: 3}
-      propertyPath: m_Interactable
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

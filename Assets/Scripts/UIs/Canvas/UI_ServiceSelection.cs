@@ -55,6 +55,7 @@ public sealed class UI_ServiceSelection : UI_Base
         selectMenuPanel?.Init(Owner);
 
         marketVisualPanel = GetComponentInChildren<UI_MarketVisualPanel>(true);
+        marketVisualPanel.Init(Owner);
 
         dayVisual = GetGameObject((int)GameObjects.UI_DayVisual)
             .GetComponent<UI_DayVisual>();

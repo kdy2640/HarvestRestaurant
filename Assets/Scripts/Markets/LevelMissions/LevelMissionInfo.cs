@@ -4,6 +4,15 @@ using UnityEngine;
 [Serializable]
 public sealed class LevelMissionInfo
 {
+    public enum MissionMenuTarget
+    {
+        None = 0,
+        MenuManagement = 1,
+        FacilityManagement = 2,
+        StaffManagement = 3,
+        HarvestUpgrade = 4
+    }
+
     private enum MissionConditionType
     {
         None = 0,
@@ -26,11 +35,13 @@ public sealed class LevelMissionInfo
     [SerializeReference] private MissionReward reward;
     [SerializeField] private string title;
     [SerializeField, TextArea] private string description;
+    [SerializeField] private MissionMenuTarget menuTarget;
 
     public MissionCondition Condition => condition;
     public MissionReward Reward => reward;
     public string Title => title;
     public string Description => description;
+    public MissionMenuTarget MenuTarget => menuTarget;
 
     internal void SyncCondition()
     {

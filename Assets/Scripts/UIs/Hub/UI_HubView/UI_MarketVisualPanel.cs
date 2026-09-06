@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,9 +33,20 @@ public sealed class UI_MarketVisualPanel : MonoBehaviour
     [SerializeField] private Color inactiveColor = Color.gray;
     [SerializeField] private Color activeColor = Color.green;
 
+    [Header("Mission Interaction")]
+    [SerializeField] private Button missionMenuButton;
+    [SerializeField] private RectTransform missionPaper;
+    [SerializeField, Min(0f)] private float missionAttentionFirstDelay = 3f;
+    [SerializeField, Min(0.1f)] private float missionAttentionInterval = 15f;
+    [SerializeField, Min(0.1f)] private float missionAttentionDuration = 0.7f;
+    [SerializeField, Min(0f)] private float missionAttentionAngle = 2f;
+
     private MarketManager marketManager;
     private UpgradeManager upgradeManager;
     private HubCanvasController owner;
+    private Sequence missionAttentionSequence;
+    private LevelMissionInfo attentionMission;
+    private Vector3 missionPaperRestEuler;
 
     public void Init(HubCanvasController owner)
     {
@@ -43,6 +55,8 @@ public sealed class UI_MarketVisualPanel : MonoBehaviour
 
     private void OnEnable()
     {
+        missionPaperRestEuler = missionPaper.localEulerAngles;
+        missionMenuButton.onClick.AddListener(OpenMissionMenu);
         rewardButton?.onClick.AddListener(ClaimCurrentMissionReward);
         promoteButton?.onClick.AddListener(Promote);
 
@@ -59,6 +73,8 @@ public sealed class UI_MarketVisualPanel : MonoBehaviour
 
     private void OnDisable()
     {
+        missionMenuButton.onClick.RemoveListener(OpenMissionMenu);
+        StopMissionAttention();
         rewardButton?.onClick.RemoveListener(ClaimCurrentMissionReward);
         promoteButton?.onClick.RemoveListener(Promote);
 
@@ -77,6 +93,7 @@ public sealed class UI_MarketVisualPanel : MonoBehaviour
         MarketManager market = GameManager.Instance.Market;
         MarketData marketData = market.MarketData;
         LevelData levelData = market.LevelData;
+        RefreshMissionInteraction();
 
         int levelSlotCount = levelSlots?.Length ?? 0;
         int activeLevelCount = Mathf.Clamp(marketData.CurrentLevel, 0, levelSlotCount);
@@ -336,6 +353,89 @@ public sealed class UI_MarketVisualPanel : MonoBehaviour
                 missionTitleText.text = "승급 미션이 없어요";
         }
          
+    }
+
+    private void OpenMissionMenu()
+    {
+        if (!missionMenuButton.interactable)
+            return;
+
+        HubCanvasController.HubCanvasState targetState;
+        switch (marketManager.LevelMissionProgress.CurrentMission.MenuTarget)
+        {
+            case LevelMissionInfo.MissionMenuTarget.MenuManagement:
+                targetState = HubCanvasController.HubCanvasState.MenuManagement;
+                break;
+            case LevelMissionInfo.MissionMenuTarget.FacilityManagement:
+                targetState = HubCanvasController.HubCanvasState.FacilityManagement;
+                break;
+            case LevelMissionInfo.MissionMenuTarget.StaffManagement:
+                targetState = HubCanvasController.HubCanvasState.StaffManagement;
+                break;
+            case LevelMissionInfo.MissionMenuTarget.HarvestUpgrade:
+                targetState = HubCanvasController.HubCanvasState.HarvestUpgrade;
+                break;
+            default:
+                return;
+        }
+
+        StopMissionAttention();
+        missionMenuButton.interactable = false;
+        owner.RequestStateChange(targetState);
+    }
+
+    private void RefreshMissionInteraction()
+    {
+        LevelMissionProgress progress = GameManager.Instance.Market.LevelMissionProgress;
+        LevelMissionInfo currentMission = progress.CurrentMission;
+        bool isInProgress = currentMission != null && !progress.IsCurrentMissionSatisfied;
+
+        missionMenuButton.interactable = isActiveAndEnabled && isInProgress
+            && currentMission.MenuTarget != LevelMissionInfo.MissionMenuTarget.None;
+
+        if (!isActiveAndEnabled || !isInProgress)
+        {
+            StopMissionAttention();
+            return;
+        }
+
+        // Ordinary progress refreshes must not keep postponing the next shake.
+        if (attentionMission == currentMission && missionAttentionSequence != null)
+            return;
+
+        StopMissionAttention();
+        attentionMission = currentMission;
+        PlayMissionAttentionLoop();
+    }
+
+    private void PlayMissionAttentionLoop()
+    {
+        Vector3 rest = missionPaperRestEuler;
+        float stepDuration = missionAttentionDuration / 4f;
+        missionAttentionSequence = DOTween.Sequence()
+            .Append(missionPaper.DOLocalRotate(rest + Vector3.forward * missionAttentionAngle,
+                stepDuration).SetEase(Ease.InOutSine))
+            .Append(missionPaper.DOLocalRotate(rest - Vector3.forward * (missionAttentionAngle * 0.75f),
+                stepDuration).SetEase(Ease.InOutSine))
+            .Append(missionPaper.DOLocalRotate(rest + Vector3.forward * (missionAttentionAngle * 0.35f),
+                stepDuration).SetEase(Ease.InOutSine))
+            .Append(missionPaper.DOLocalRotate(rest, stepDuration).SetEase(Ease.InOutSine))
+            .AppendInterval(Mathf.Max(0f, missionAttentionInterval - missionAttentionDuration))
+            .SetDelay(missionAttentionFirstDelay, false)
+            .SetLoops(-1)
+            .SetUpdate(true);
+    }
+
+    private void StopMissionAttention()
+    {
+        if (missionAttentionSequence != null)
+        {
+            missionAttentionSequence.Kill();
+            missionAttentionSequence = null;
+            missionPaper.localEulerAngles = missionPaperRestEuler;
+        }
+
+        attentionMission = null;
     }
 
     public void ClaimCurrentMissionReward()

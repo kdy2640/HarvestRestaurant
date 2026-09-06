@@ -17,6 +17,7 @@ MonoBehaviour:
     \uB9DB\uC9D1"
   missions:
   - conditionType: 1
+    menuTarget: 4
     condition:
       rid: 4385387211786289251
     rewardType: 1
@@ -26,6 +27,7 @@ MonoBehaviour:
       1 \uAD6C\uB9E4"
     description: 
   - conditionType: 1
+    menuTarget: 3
     condition:
       rid: 4385387211786289253
     rewardType: 2
@@ -34,6 +36,7 @@ MonoBehaviour:
     title: "\uB18D\uC0AC \uC9C1\uC6D0 1 \uACE0\uC6A9"
     description: 
   - conditionType: 6
+    menuTarget: 0
     condition:
       rid: 4385387211786289255
     rewardType: 1
@@ -42,6 +45,7 @@ MonoBehaviour:
     title: "\uB2F9\uADFC \uB0A9\uD488"
     description: 
   - conditionType: 1
+    menuTarget: 4
     condition:
       rid: 4385387211786289257
     rewardType: 1
@@ -50,6 +54,7 @@ MonoBehaviour:
     title: "\uD2B8\uB799\uD130 \uC18D\uB3C4 \uC5C5\uADF8\uB808\uC774\uB4DC 1 \uAD6C\uB9E4"
     description: 
   - conditionType: 6
+    menuTarget: 0
     condition:
       rid: 4385387211786289259
     rewardType: 2
