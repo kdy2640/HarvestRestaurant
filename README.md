@@ -11,9 +11,9 @@
 
 <table>
   <tr>
-    <td><img src="" width="100%"></td>
-    <td><img src="" width="100%"></td>
-    <td><img src="" width="100%"></td>
+    <td><img src="./Images/HRMain.png" width="100%"></td>
+    <td><img src="./Images/HRHarvest.png" width="100%"></td>
+    <td><img src="./Images/HRService.png" width="100%"></td>
   </tr>
 </table>
 
