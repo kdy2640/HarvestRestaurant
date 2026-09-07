@@ -66,4 +66,61 @@ Assets/Scripts
 ├── UpgradeSys      # 런타임 스탯, 레벨 및 업그레이드 시스템
 └── Utility         # CSV Reader
 ```
+## 손님 상태 흐름도
+```mermaid
+stateDiagram-v2
+    [*] --> Enter
 
+    Enter --> MoveToTable : 자리 있음
+    Enter --> Waiting : 자리 없음
+
+    Waiting --> MoveToTable : 자리 배정
+
+    MoveToTable --> Order : 테이블 도착
+
+    Order --> WaitForFood : 주문 완료
+    Order --> AngryGoHome : 대기 시간 초과
+
+    WaitForFood --> Eating : 음식 제공
+
+    Eating --> GoHome : 식사 완료
+    Eating --> Tip : 팁 발생
+    Eating --> Drink : 음료 이용
+    Eating --> Run : 도망
+
+    Run --> Caught : 직원이 잡음
+    Run --> [*] : 도망 성공
+
+    Caught --> GoHome : 돈 회수
+
+    Drink --> Tip : 음료 이용 완료
+    Drink --> GoHome : 식사 종료
+
+    Tip --> GoHome : 팁 획득
+
+    GoHome --> [*]
+    AngryGoHome --> [*]
+```
+## 직원 상태 흐름도
+```mermaid
+stateDiagram-v2
+    [*] --> Idle
+
+    Idle --> MoveToKitchen : 요리 요청
+    MoveToKitchen --> ReceiveFood : 음식 수령
+    ReceiveFood --> MoveToTable : 서빙 대상 확인
+    MoveToTable --> Serve : 테이블 도착
+    Serve --> GetBack : 서빙 완료
+    GetBack --> Idle : 복귀 완료
+
+    Idle --> CatchRunner : 도망 손님 발생
+    CatchRunner --> TakeMoney : 손님 추격 성공
+    TakeMoney --> GetBack : 돈 회수 완료
+
+    Idle --> Sleeping : 수면 조건 충족
+    Sleeping --> Idle : 수면 완료
+
+    Idle --> GoToClean : 청소 필요
+    GoToClean --> Clean : 청소 장소 도착
+    Clean --> GetBack : 청소 완료
+```
