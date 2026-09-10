@@ -18,7 +18,8 @@ GameObject:
   - component: {fileID: 5413564413693199641}
   - component: {fileID: 6451580159723639738}
   - component: {fileID: 7054079565244798741}
-  m_Layer: 0
+  - component: {fileID: 4718322979332972889}
+  m_Layer: 10
   m_Name: CropActor
   m_TagString: Harvestable
   m_Icon: {fileID: 0}
@@ -97,6 +98,7 @@ MonoBehaviour:
   presenter: {fileID: 2424644141719764984}
   mover: {fileID: 6072916682551283211}
   animalStateController: {fileID: 6248518773770128840}
+  detectionCollider: {fileID: 4718322979332972889}
 --- !u!114 &6248518773770128840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,3 +167,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b2de95667c32c24eb61a3e8ca50eaa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimalDeadState
+--- !u!135 &4718322979332972889
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5170371248692864655}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.05
+  m_Center: {x: 0, y: 0, z: 0}

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -7,9 +8,14 @@ public sealed class CropCutter : MonoBehaviour
 {
     private const float CutterOffset = 0.7f;
     private const float OverloadDamageBoostAmount = 0.3f;
+    private static readonly ProfilerMarker ChunkQueryMarker = new("Harvest.ChunkQuery");
+    private static readonly ProfilerMarker TriggerQueryMarker = new("Harvest.TriggerTargets");
+    private static readonly ProfilerMarker ProcessTargetsMarker = new("Harvest.ProcessTargets");
 
     [SerializeField] private GridChunkHandler gridChunkHandler;
     [SerializeField] private CutterViewer cutterViewer;
+    [SerializeField] private BoxCollider detectionTrigger;
+    [SerializeField, Min(0.01f)] private float triggerHeight = 20f;
     [SerializeField, Min(0f)] private float cuttingRange = 0.5f;
     [SerializeField, Min(0f)] private float rangeLerpSpeed = 8f;
     [SerializeField, Min(0f)] private float damage = 1f;
@@ -18,6 +24,8 @@ public sealed class CropCutter : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float cuttingDistanceSafetyRatio = 0.75f;
 
     private readonly Dictionary<int, float> nextDamageTimes = new();
+    private readonly List<Transform> triggerTargets = new();
+    private bool useTriggerDetection;
     private float cuttingUntilTime;
     private float cuttingSpeedLimit = float.PositiveInfinity;
     private float damageMultiplier = 1f;
@@ -30,6 +38,9 @@ public sealed class CropCutter : MonoBehaviour
     public bool IsCutting => Time.time <= cuttingUntilTime;
     public float Range => cuttingRange;
     public float TargetRange { get; private set; }
+    public bool UsesTriggerDetection => useTriggerDetection;
+    public int TriggerCandidateCount => triggerTargets.Count;
+    public int LastDetectedTargetCount { get; private set; }
     public float MoveSpeedMultiplier =>
         IsCutting ? cuttingMoveSpeedMultiplier : 1f;
     public float CuttingSpeedLimit =>
@@ -38,6 +49,56 @@ public sealed class CropCutter : MonoBehaviour
     public void Initialize(GridChunkHandler handler)
     {
         gridChunkHandler = handler;
+    }
+
+    public void SetTriggerDetection(bool enabled)
+    {
+        if (useTriggerDetection == enabled)
+            return;
+
+        useTriggerDetection = enabled;
+        triggerTargets.Clear();
+        LastDetectedTargetCount = 0;
+        detectionTrigger.enabled = false;
+        UpdateTriggerSize();
+        detectionTrigger.enabled = enabled && isActiveAndEnabled;
+    }
+
+    private void OnEnable()
+    {
+        detectionTrigger.enabled = useTriggerDetection;
+    }
+
+    private void OnDisable()
+    {
+        detectionTrigger.enabled = false;
+        triggerTargets.Clear();
+        LastDetectedTargetCount = 0;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!useTriggerDetection || !other.CompareTag("Harvestable"))
+            return;
+
+        if (!triggerTargets.Contains(other.transform))
+            triggerTargets.Add(other.transform);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (useTriggerDetection)
+            triggerTargets.Remove(other.transform);
+    }
+
+    private void UpdateTriggerSize()
+    {
+        // 높이 차이로 후보를 놓치지 않는 박스. 최종 판정은 기존 XZ 원을 사용한다.
+        Vector3 scale = transform.lossyScale;
+        detectionTrigger.size = new Vector3(
+            cuttingRange * 2f / Mathf.Abs(scale.x),
+            triggerHeight / Mathf.Abs(scale.y),
+            cuttingRange * 2f / Mathf.Abs(scale.z));
     }
 
     public void ApplyUpgradeStats(
@@ -140,6 +201,8 @@ public sealed class CropCutter : MonoBehaviour
         transform.localPosition = localPosition;
 
         cutterViewer?.SetRange(cuttingRange);
+        if (Application.isPlaying && useTriggerDetection)
+            UpdateTriggerSize();
     }
 
     private void OnDrawGizmosSelected()
@@ -152,6 +215,7 @@ public sealed class CropCutter : MonoBehaviour
 
     private void FixedUpdate()
     {
+        LastDetectedTargetCount = 0;
         if (GameManager.Instance?.Harvest?.IsRunning != true)
             return;
 
@@ -160,10 +224,37 @@ public sealed class CropCutter : MonoBehaviour
             return;
         }
 
-        List<Transform> nearbyTransforms =
-            gridChunkHandler.Registry.GetNearbyTransforms(
-                transform.position,
-                cuttingRange);
+        List<Transform> nearbyTransforms;
+        if (useTriggerDetection)
+        {
+            using (TriggerQueryMarker.Auto())
+            {
+                // 비활성화/파괴 시 Exit 콜백 없이 남은 참조도 정리한다.
+                for (int i = triggerTargets.Count - 1; i >= 0; i--)
+                {
+                    Transform target = triggerTargets[i];
+                    if (target == null || !target.gameObject.activeInHierarchy)
+                        triggerTargets.RemoveAt(i);
+                }
+                nearbyTransforms = triggerTargets;
+            }
+        }
+        else
+        {
+            using (ChunkQueryMarker.Auto())
+            {
+                nearbyTransforms = gridChunkHandler.Registry.GetNearbyTransforms(
+                    transform.position,
+                    cuttingRange);
+            }
+        }
+
+        using (ProcessTargetsMarker.Auto())
+            ProcessTargets(nearbyTransforms);
+    }
+
+    private void ProcessTargets(List<Transform> nearbyTransforms)
+    {
         bool wasCutting = IsCutting;
         bool foundTarget = false;
         float frameSpeedLimit = float.PositiveInfinity;
@@ -182,7 +273,19 @@ public sealed class CropCutter : MonoBehaviour
                 continue;
             }
 
+            if (useTriggerDetection)
+            {
+                if (!crop.IsHarvestable)
+                    continue;
+
+                Vector3 offset = target.position - transform.position;
+                offset.y = 0f;
+                if (offset.sqrMagnitude > cuttingRange * cuttingRange)
+                    continue;
+            }
+
             foundTarget = true;
+            LastDetectedTargetCount++;
             cuttingUntilTime = Time.time + Time.fixedDeltaTime * 2f;
 
             float effectiveDamage = damage * damageMultiplier;

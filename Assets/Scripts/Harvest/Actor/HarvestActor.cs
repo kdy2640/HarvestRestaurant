@@ -11,6 +11,7 @@ public sealed class HarvestActor : MonoBehaviour
     [SerializeField] private HarvestPresenter presenter;
     [SerializeField] private HarvestMover mover;
     [SerializeField] private AnimalStateController animalStateController;
+    [SerializeField] private SphereCollider detectionCollider;
 
     private HarvestDataSO harvestDataSO;
     private HarvestEmployeeResolver employeeResolver;
@@ -18,8 +19,16 @@ public sealed class HarvestActor : MonoBehaviour
     private ChunkRegistry registry;
     private bool isInitialized;
     private bool isDying;
+    private bool useTriggerDetection;
 
     public float CurrentHp => hpHandler.nowHp;
+    public bool IsHarvestable => isInitialized && !isDying && isActiveAndEnabled;
+
+    public void SetTriggerDetection(bool enabled)
+    {
+        useTriggerDetection = enabled;
+        detectionCollider.enabled = enabled && IsHarvestable;
+    }
 
     public void Init(
         HarvestType type,
@@ -97,6 +106,7 @@ public sealed class HarvestActor : MonoBehaviour
 
     private void OnEnable()
     {
+        detectionCollider.enabled = useTriggerDetection && IsHarvestable;
         if (isInitialized && registry != null)
         {
             registry.Register(transform);
@@ -113,6 +123,7 @@ public sealed class HarvestActor : MonoBehaviour
 
     private void OnDisable()
     {
+        detectionCollider.enabled = false;
         if (registry != null)
         {
             registry.Unregister(transform);
@@ -143,6 +154,7 @@ public sealed class HarvestActor : MonoBehaviour
         Vector3 gainPoint = transform.position;
 
         isDying = true;
+        detectionCollider.enabled = false;
         registry.Unregister(transform);
 
         if (harvestDataSO.HarvestType == HarvestType.Pig)

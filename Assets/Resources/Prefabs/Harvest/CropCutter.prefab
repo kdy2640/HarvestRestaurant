@@ -49,7 +49,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -64,7 +64,8 @@ GameObject:
   - component: {fileID: 6583452386275630816}
   - component: {fileID: 628841286088958553}
   - component: {fileID: 8864031198030267383}
-  m_Layer: 0
+  - component: {fileID: 2765390427666121012}
+  m_Layer: 11
   m_Name: CropCutter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,9 +128,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80246fa91a744a76bcda72f2142583d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CropCutter
+  detectionTrigger: {fileID: 2765390427666121012}
+  triggerHeight: 20
   damage: 1
   damageDelay: 0.25
   cuttingMoveSpeedMultiplier: 0.35
+--- !u!65 &2765390427666121012
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4908712230960804470}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 1, y: 20, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9217499566733279299
 GameObject:
   m_ObjectHideFlags: 0

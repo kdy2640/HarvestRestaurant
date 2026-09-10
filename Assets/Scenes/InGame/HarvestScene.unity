@@ -5167,6 +5167,39 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1520589430}
   m_Mesh: {fileID: -4811199268007187627, guid: 56e9c43fade927547b14b03955687de7, type: 3}
+--- !u!114 &1547569143 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8105752948851496870, guid: 0c73e84de52701e489fa7d4110fcb63a, type: 3}
+  m_PrefabInstance: {fileID: 1197255039772184434}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80246fa91a744a76bcda72f2142583d4, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::CropCutter
+--- !u!114 &1547569144 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4771638664499785656, guid: 0c73e84de52701e489fa7d4110fcb63a, type: 3}
+  m_PrefabInstance: {fileID: 1197255039772184434}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80246fa91a744a76bcda72f2142583d4, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::CropCutter
+--- !u!114 &1547569145 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3149862550899122556, guid: 0c73e84de52701e489fa7d4110fcb63a, type: 3}
+  m_PrefabInstance: {fileID: 1197255039772184434}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80246fa91a744a76bcda72f2142583d4, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::CropCutter
 --- !u!1 &1579403316
 GameObject:
   m_ObjectHideFlags: 0
@@ -5665,6 +5698,7 @@ GameObject:
   - component: {fileID: 1720089968}
   - component: {fileID: 1720089969}
   - component: {fileID: 1720089970}
+  - component: {fileID: 1720089971}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -5741,6 +5775,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemSpawner
   itemPrefab: {fileID: 5001674842805473253, guid: d8093d4a231bfbf42a3c5f0ed19dd8ac, type: 3}
   cropClearance: 1.2
+--- !u!114 &1720089971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1720089966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43d0c7705040d4845a78b13c037ff0b6, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::HarvestDetectionBenchmark
+  spawner: {fileID: 1720089968}
+  cutters:
+  - {fileID: 1547569144}
+  - {fileID: 1547569143}
+  - {fileID: 1547569145}
+  useTriggerDetection: 0
 --- !u!1 &1764439312
 GameObject:
   m_ObjectHideFlags: 0

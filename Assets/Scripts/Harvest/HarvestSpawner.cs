@@ -19,7 +19,17 @@ public sealed class HarvestSpawner : MonoBehaviour
     private HarvestEmployeeResolver employeeResolver;
     private HarvestManager harvestManager;
     private bool hasSpawnedPigs;
+    private bool useTriggerDetection;
     private readonly List<HarvestActor> spawnedPigs = new();
+
+    public void SetTriggerDetection(bool enabled)
+    {
+        useTriggerDetection = enabled;
+        foreach (HarvestActor crop in spawnedCrops)
+        {
+            crop.SetTriggerDetection(enabled);
+        }
+    }
 
     private void Awake()
     {
@@ -134,6 +144,7 @@ public sealed class HarvestSpawner : MonoBehaviour
             gridChunkHandler,
             employeeResolver,
             groceryGainRoutine);
+        crop.SetTriggerDetection(useTriggerDetection);
         spawnedCrops.Add(crop);
         return crop;
     }

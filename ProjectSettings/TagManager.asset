@@ -16,8 +16,8 @@ TagManager:
   - 
   - HarvestUpgradePreview
   - FacilityUpgrade
-  - 
-  - 
+  - HarvestDetectionActor
+  - HarvestDetectionCutter
   - 
   - 
   - 

@@ -345,7 +345,8 @@ GameObject:
   - component: {fileID: 1093886872668648898}
   - component: {fileID: 4771638664499785656}
   - component: {fileID: 8608268314207601637}
-  m_Layer: 0
+  - component: {fileID: 2942862386322711421}
+  m_Layer: 11
   m_Name: CutterPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -409,6 +410,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CropCutter
   gridChunkHandler: {fileID: 0}
   cutterViewer: {fileID: 8608268314207601637}
+  detectionTrigger: {fileID: 2942862386322711421}
+  triggerHeight: 20
   cuttingRange: 1
   rangeLerpSpeed: 8
   damage: 1
@@ -430,6 +433,27 @@ MonoBehaviour:
   scaleMultiplier: 2
   rotationDegreesPerSecond: 360
   cutterRange: 1
+--- !u!65 &2942862386322711421
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7306643468460461283}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 2, y: 20, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7401439357510383009
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,7 +466,8 @@ GameObject:
   - component: {fileID: 7138977968557093405}
   - component: {fileID: 8105752948851496870}
   - component: {fileID: 1715619154997296630}
-  m_Layer: 0
+  - component: {fileID: 3155321899896793083}
+  m_Layer: 11
   m_Name: CutterPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -506,6 +531,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CropCutter
   gridChunkHandler: {fileID: 0}
   cutterViewer: {fileID: 1715619154997296630}
+  detectionTrigger: {fileID: 3155321899896793083}
+  triggerHeight: 20
   cuttingRange: 0.7
   rangeLerpSpeed: 8
   damage: 1
@@ -527,6 +554,27 @@ MonoBehaviour:
   scaleMultiplier: 2
   rotationDegreesPerSecond: 360
   cutterRange: 0.7
+--- !u!65 &3155321899896793083
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7401439357510383009}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 2, y: 28.571428, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9095978913807925055
 GameObject:
   m_ObjectHideFlags: 0
@@ -572,7 +620,8 @@ GameObject:
   - component: {fileID: 5643957557527613408}
   - component: {fileID: 3149862550899122556}
   - component: {fileID: 8199348598215659085}
-  m_Layer: 0
+  - component: {fileID: 8264348250721357202}
+  m_Layer: 11
   m_Name: CutterPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -636,6 +685,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CropCutter
   gridChunkHandler: {fileID: 0}
   cutterViewer: {fileID: 8199348598215659085}
+  detectionTrigger: {fileID: 8264348250721357202}
+  triggerHeight: 20
   cuttingRange: 0.7
   rangeLerpSpeed: 8
   damage: 1
@@ -657,6 +708,27 @@ MonoBehaviour:
   scaleMultiplier: 2
   rotationDegreesPerSecond: 360
   cutterRange: 0.7
+--- !u!65 &8264348250721357202
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9119567643905237405}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 2, y: 28.571428, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &177228893412250485
 PrefabInstance:
   m_ObjectHideFlags: 0
