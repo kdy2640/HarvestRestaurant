@@ -19,13 +19,8 @@ public sealed class AnimalFleeState : AnimalStateBase
         if (!Controller.IsPlayerWithin(Controller.AnimalStat.FleeDistance))
         {
             Controller.SetState(AnimalStateType.Patrol);
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (!Controller.IsRunning)
             return;
+        }
 
         Vector3 direction = transform.position - Controller.Player.position;
         direction.y = 0f;

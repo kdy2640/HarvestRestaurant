@@ -41,6 +41,7 @@ public sealed class CropCutter : MonoBehaviour
     public bool UsesTriggerDetection => useTriggerDetection;
     public int TriggerCandidateCount => triggerTargets.Count;
     public int LastDetectedTargetCount { get; private set; }
+    public int DamageCallCount { get; private set; }
     public float MoveSpeedMultiplier =>
         IsCutting ? cuttingMoveSpeedMultiplier : 1f;
     public float CuttingSpeedLimit =>
@@ -314,6 +315,7 @@ public sealed class CropCutter : MonoBehaviour
             }
 
             crop.TakeDamage(damage * damageMultiplier);
+            DamageCallCount++;
             nextDamageTimes[cropId] =
                 Time.time + Mathf.Max(0f, damageDelay);
         }

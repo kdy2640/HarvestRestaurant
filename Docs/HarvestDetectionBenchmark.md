@@ -1,48 +1,57 @@
-# 수확 감지 A/B 전환 기반
+# 청크 스트리머 ON/OFF 벤치마크
 
-`HarvestScene`의 `Spawner`에 `HarvestDetectionBenchmark`가 연결되어 있다.
-기본값은 기존 청크 감지다. 이번 단계에는 자동 주행이나 CSV 측정기가 포함되지 않는다.
+비교 대상은 청크 스트리밍의 유무다. 양쪽 모두 `ChunkRegistry.GetNearbyTransforms`로 수확 대상을 찾으며 트리거 감지는 비활성화한다.
 
-## 전환
+| 모드 | 생성·활성화 | 측정 중 동작 |
+|---|---|---|
+| StreamerOn | 로딩 타깃 주변을 먼저 생성 | 기존 반경 기준 로드·언로드 유지 |
+| StreamerOff | 맵 안의 모든 청크를 먼저 생성·활성화 | 거리 기준 생성·비활성화와 부모 청크 이동 없음 |
 
-- Inspector의 `Use Trigger Detection`: 끄면 Chunk, 켜면 Trigger.
-- 실행 전 설정하거나 Play 중 변경할 수 있다.
-- 컴포넌트 컨텍스트 메뉴: `Detection/Use Chunk`, `Detection/Use Trigger`.
-- MCP `execute_code`에서 Play 중 다음 메서드를 호출할 수 있다.
+OFF에서도 이동 Actor의 Registry 좌표 갱신, AI, Animator, 수확, 피해 간격, 감속, 아이템, 보상과 사망 비활성화는 유지한다. 현재 맵은 250×250, 청크 크기는 5이므로 전체 청크 수는 2,500개다.
 
-```csharp
-UnityEngine.Object.FindFirstObjectByType<HarvestDetectionBenchmark>()
-    .UseTriggerDetection();
+## 실행
+
+저장된 `MainScene`을 열고 Play를 종료한 상태에서 프로젝트 루트에서 실행한다.
+
+```powershell
+python -B Tools/harvest_benchmark.py --radius 10 --seconds 10
+python -B Tools/harvest_benchmark.py --radius 10 --seconds 10 --reverse
 ```
 
-```csharp
-UnityEngine.Object.FindFirstObjectByType<HarvestDetectionBenchmark>()
-    .UseChunkDetection();
-```
+기본 순서는 ON→OFF이며 `--reverse`는 OFF→ON이다. `--radius`는 ON의 로딩·언로딩 반경이다. OFF에는 활성화 범위 제한으로 사용하지 않는다. 기본 시드는 12345이며 `--seed`로 지정한다.
 
-세 커터(비활성 사이드카 포함), 기존 Actor, 이후 스폰되는 Actor에 적용된다.
-모드 전환은 기존 HP, 피해 쿨다운, 감속 상태, 배치나 난수 상태를 초기화하지 않는다.
-동일 초기 조건으로 성능을 비교할 때는 별도 실행이 필요하다.
-트리거 접촉 목록은 물리 시뮬레이션 뒤에 갱신되므로 전환 직후 프레임은 측정에서 제외한다.
+각 실행은 원래 세이브로 시작한다. 정상 Main→Hub→Harvest 흐름을 사용하며, 초기 로딩이 끝나야 출발 연출과 게임 루프를 시작한다. OFF의 전체 생성 중 초기 지연은 측정하지 않는다. 준비 시간은 `settings.json`의 `preparationSeconds`에 별도로 저장한다. 실제 측정은 게임 루프 시작 후 동일한 전진 입력으로 진행하며, 측정 첫 1초도 워밍업으로 구분해 집계에서 제외한다.
 
-## 판정과 유지 동작
+각 A/B 실행기는 150초에서 중단하고 Play 종료·세이브 복원 시간을 확보한다. 검증은 3분을 넘겨 계속 진행하지 않는다. 전체 생성은 동기 처리이므로 생성 중 에디터 응답이 지연될 수 있다.
 
-- Chunk는 기존 Registry 조회와 조회 시 결과 List 생성을 유지한다.
-- Trigger는 Enter/Exit로 후보를 유지한 뒤 기존 XZ 중심 거리로 최종 판정한다.
-- Actor 중심의 작은 SphereCollider와 커터의 BoxCollider를 사용한다.
-  커터 박스는 XZ 원을 포함하며 월드 높이 기본값은 20이다.
-  이 높이는 현재 평면 수확맵용이며, 높이 차이가 큰 새 맵은 별도 확인이 필요하다.
-- 전용 레이어 `HarvestDetectionActor`(10), `HarvestDetectionCutter`(11) 사이만 접촉한다.
-- Chunk에서는 비교용 Collider가 비활성화된다. Actor Rigidbody는 추가하지 않았다.
-- 피해 간격, 피해량, 수확 감속, 보상, Registry 등록과 청크 스트리밍은 유지한다.
-- 사망 Actor는 즉시 Collider를 끄고 대상 판정에서 제외한다.
-- 비활성화/파괴된 후보는 제거하고, 커터 비활성화/모드 변경 시 접촉 목록을 비운다.
+## 수동 설정
 
-## 다음 측정에 사용할 관측값
+`HarvestScene/Spawner`의 `HarvestStreamingBenchmark`에서 Play 전에 `Use Streaming`, `Seed`, `Load Radius`를 설정한다. 실행 중 모드를 바꾸는 실험은 지원하지 않는다. 자동 실행기는 Spawner.Start 이전에 `Configure`를 호출한다.
 
-- `HarvestDetectionBenchmark.UsesTriggerDetection`: 적용 중인 모드.
-- `CropCutter.UsesTriggerDetection`: 커터별 모드.
-- `CropCutter.TriggerCandidateCount`: 접촉 후보 수. 최종 수확 대상 수와 다르다.
-- `CropCutter.LastDetectedTargetCount`: 직전 FixedUpdate에서 인정된 대상 수. 피해 횟수는 아니다.
-- Profiler: `Harvest.ChunkQuery`, `Harvest.TriggerTargets`, `Harvest.ProcessTargets`.
-  트리거 콜백 및 Unity 내부 Physics 비용은 전체 CPU/Physics 구간과 함께 확인해야 한다.
+이전 `HarvestDetectionBenchmark` 컴포넌트는 이 컴포넌트로 교체했다. Actor·커터에 남아 있는 비교용 콜라이더는 두 모드 모두 비활성화된다.
+
+## 생성 조건
+
+벤치마크에서는 기본 시드와 청크 좌표로 생성 시드를 정한다. 청크 생성 후 전역 Random 상태를 복원하여 생성 순서가 다른 모드에서도 같은 청크의 작물 종류·초기 위치가 일치하도록 한다. 이후 동물 AI와 프레임 진행은 결정적 재생이 아니다. 아이템 배치는 인접 Registry 조회에도 의존하므로 시드만으로 완전 일치를 보장하지 않는다.
+
+ON/OFF의 활성 Actor·청크 수 차이는 실패 조건이 아니라 이번 비교의 대상이다. 시드, 플레이어 초기 상태, 업그레이드, 맵 크기, 수확 범위와 시간 설정은 공통 조건으로 검증한다. OFF는 모든 측정 프레임에서 전체 청크가 로드되어 있고, 대기·로드·언로드 수가 0인지 별도로 검증한다.
+
+## 저장 결과
+
+`Logs/HarvestBenchmark/날짜_시간/`에 저장한다.
+
+- `settings.json`: 실행 조건, 준비 시간, 최초 로딩 완료 여부, 전체 청크 수, 시작 개체 수.
+- `frames.csv`: 프레임 시간, PlayerLoop, Main Thread, 물리·청크 조회·수확 처리 마커, GC, 활성 개체 수, 청크 로딩, 이동·수확량.
+- `summary.csv`, `report.md`: 평균 프레임 시간·평균 FPS·평균 PlayerLoop와 백분위. FPS는 1000을 평균 프레임 시간으로 나눈 값이다.
+- `validation.json`: 공통 조건과 OFF의 전체 맵 유지 확인, EditorLoop 유효 샘플 수.
+- `session.json`, `save_before.json`: 소스 버전·해시, 원본 세이브와 복원 결과.
+
+초기 로딩 이후 ON에서 발생하는 이동 중 로드·언로드 비용은 결과에 포함한다. 로딩 구간과 안정 구간도 나눠 집계한다. 씬의 기존 Animator 경고 등 에디터 비용도 포함될 수 있다.
+
+## EditorLoop
+
+기존 Recorder API가 EditorLoop를 0으로 반환해, 현재는 Profiler 원본 프레임의 Main Thread 직계 EditorLoop 구간을 합산한다. 새 원본 프레임 번호가 들어오지 않거나 마커가 없으면 미수집으로 기록한다. `editor_profile_frame`으로 중복 집계를 방지한다. 수집이 중단된 과거 프레임이나 0을 유효한 평균으로 해석하지 않는다.
+
+자동 실행은 Profiler 기록 설정을 변경하지 않는다. `settings.json`의 `profilerEnabled`, `profileEditor`에 상태를 저장한다. Editor 타깃에서는 PlayerLoop가 EditorLoop 아래에 중첩될 수 있으므로 두 값을 무조건 합산·차감하지 않는다. EditorLoop가 미수집이어도 다른 측정값은 저장하며, 에디터 비용을 분리했다고 주장하지 않는다.
+
+이전 청크 조회/트리거 비교 로그는 과거 실험으로 보존하며 이번 스트리머 비교와 합산하지 않는다.

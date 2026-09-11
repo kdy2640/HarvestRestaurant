@@ -10,6 +10,9 @@ public class HarvestScene : SceneBase
     {
         GameManager.Instance.Harvest.PrepareReveal();
         yield return null;
+        GridChunkHandler grid = Object.FindFirstObjectByType<GridChunkHandler>();
+        while (!grid.Streamer.IsInitialLoadComplete)
+            yield return null;
     }
 
     public override IEnumerator Enter()

@@ -22,6 +22,20 @@ public sealed class TractorController : MonoBehaviour
     private InputAction moveAction;
     private CropCutter[] cropCutters;
     private Vector2 moveInput;
+    private bool useBenchmarkInput;
+    private Vector2 benchmarkInput;
+
+    public void SetBenchmarkInput(Vector2 input)
+    {
+        useBenchmarkInput = true;
+        benchmarkInput = input;
+    }
+
+    public void ClearBenchmarkInput()
+    {
+        useBenchmarkInput = false;
+        moveInput = Vector2.zero;
+    }
     private bool isCharging;
     private bool isStageBoundaryBlocked;
     private bool isEngineSFXPlaying;
@@ -88,7 +102,9 @@ public sealed class TractorController : MonoBehaviour
             return;
         }
 
-        moveInput = Vector2.ClampMagnitude(moveAction.ReadValue<Vector2>(), 1f);
+        moveInput = useBenchmarkInput
+            ? benchmarkInput
+            : Vector2.ClampMagnitude(moveAction.ReadValue<Vector2>(), 1f);
     }
 
     private void FixedUpdate()

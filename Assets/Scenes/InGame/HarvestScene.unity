@@ -5176,7 +5176,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80246fa91a744a76bcda72f2142583d4, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CropCutter
 --- !u!114 &1547569144 stripped
 MonoBehaviour:
@@ -5187,7 +5187,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80246fa91a744a76bcda72f2142583d4, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CropCutter
 --- !u!114 &1547569145 stripped
 MonoBehaviour:
@@ -5198,7 +5198,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80246fa91a744a76bcda72f2142583d4, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CropCutter
 --- !u!1 &1579403316
 GameObject:
@@ -5699,6 +5699,7 @@ GameObject:
   - component: {fileID: 1720089969}
   - component: {fileID: 1720089970}
   - component: {fileID: 1720089971}
+  - component: {fileID: 1720089972}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -5760,6 +5761,7 @@ MonoBehaviour:
     loadRadius: 10
     unloadRadius: 10
     maxChunkLoadsPerFrame: 4
+    viewHalfAngle: 80
   showGridGizmos: 1
 --- !u!114 &1720089970
 MonoBehaviour:
@@ -5785,14 +5787,36 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43d0c7705040d4845a78b13c037ff0b6, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::HarvestDetectionBenchmark
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HarvestStreamingBenchmark
+  grid: {fileID: 1720089969}
   spawner: {fileID: 1720089968}
   cutters:
   - {fileID: 1547569144}
   - {fileID: 1547569143}
   - {fileID: 1547569145}
-  useTriggerDetection: 0
+  useStreaming: 1
+  seed: 12345
+  loadRadius: 10
+--- !u!114 &1720089972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1720089966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e9d4a1abd2b7b4882eaecc0169d626, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HarvestBenchmarkRecorder
+  benchmark: {fileID: 1720089971}
+  grid: {fileID: 1720089969}
+  tractor: {fileID: 1197255039772184436}
+  cutters:
+  - {fileID: 1547569144}
+  - {fileID: 1547569143}
+  - {fileID: 1547569145}
 --- !u!1 &1764439312
 GameObject:
   m_ObjectHideFlags: 0

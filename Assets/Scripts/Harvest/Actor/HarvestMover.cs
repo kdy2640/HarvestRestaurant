@@ -62,7 +62,7 @@ public sealed class HarvestMover : MonoBehaviour
         Vector3 currentPosition = transform.position;
         Vector3 nextPosition = currentPosition
             + direction.normalized
-            * (moveSpeed * Time.fixedDeltaTime);
+            * (moveSpeed * Time.deltaTime);
         nextPosition = geometry.ClampToArea(nextPosition);
 
         nextPosition = ClampToStage(nextPosition);

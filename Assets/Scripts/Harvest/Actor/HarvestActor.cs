@@ -100,6 +100,9 @@ public sealed class HarvestActor : MonoBehaviour
 
         if (gameObject.activeInHierarchy)
         {
+            registry.ActiveActorCount++;
+            if (harvestDataSO.IsMove)
+                registry.ActiveMovingActorCount++;
             registry.Register(transform);
         }
     }
@@ -109,6 +112,9 @@ public sealed class HarvestActor : MonoBehaviour
         detectionCollider.enabled = useTriggerDetection && IsHarvestable;
         if (isInitialized && registry != null)
         {
+            registry.ActiveActorCount++;
+            if (harvestDataSO.IsMove)
+                registry.ActiveMovingActorCount++;
             registry.Register(transform);
         }
     }
@@ -126,6 +132,12 @@ public sealed class HarvestActor : MonoBehaviour
         detectionCollider.enabled = false;
         if (registry != null)
         {
+            if (isInitialized)
+            {
+                registry.ActiveActorCount--;
+                if (harvestDataSO.IsMove)
+                    registry.ActiveMovingActorCount--;
+            }
             registry.Unregister(transform);
         }
     }
@@ -154,6 +166,7 @@ public sealed class HarvestActor : MonoBehaviour
         Vector3 gainPoint = transform.position;
 
         isDying = true;
+        registry.HarvestedCount++;
         detectionCollider.enabled = false;
         registry.Unregister(transform);
 

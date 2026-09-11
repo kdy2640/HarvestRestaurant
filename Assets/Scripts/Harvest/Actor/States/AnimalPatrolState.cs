@@ -22,13 +22,8 @@ public sealed class AnimalPatrolState : AnimalStateBase
         if (Controller.IsPlayerWithin(Controller.AnimalStat.DetectionRange))
         {
             Controller.SetState(AnimalStateType.Flee);
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (!Controller.IsRunning)
             return;
+        }
 
         if (Controller.Mover.HasArrived(patrolTarget))
         {

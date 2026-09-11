@@ -8,6 +8,11 @@ public sealed class ChunkRegistry
 
     private GridGeometry geometry;
 
+    public int ActiveActorCount { get; internal set; }
+    public int ActiveMovingActorCount { get; internal set; }
+    public int HarvestedCount { get; internal set; }
+    public int RegisteredActorCount => registeredChunks.Count;
+
     private sealed class GridChunk
     {
         public readonly List<Transform> Transforms = new();
