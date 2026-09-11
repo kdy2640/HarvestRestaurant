@@ -4,10 +4,11 @@
 
 
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=g8p18phqylE">
-    <img src="https://img.youtube.com/vi/g8p18phqylE/0.jpg" alt="MineRush Gameplay Video" width="70%">
+  <a href="https://youtu.be/NRDXYoASyi0">
+    <img src="https://img.youtube.com/vi/NRDXYoASyi0/0.jpg" alt="Harvest Restaurant Gameplay Video" width="70%">
   </a>
 </p>
+
 
 <table>
   <tr>
