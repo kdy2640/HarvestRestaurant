@@ -4,7 +4,7 @@
 
 
 <p align="center">
-  <a href="https://youtu.be/NRDXYoASyi0">
+  <a href="https://www.youtube.com/watch?v=NRDXYoASyi0">
     <img src="https://img.youtube.com/vi/NRDXYoASyi0/0.jpg" alt="Harvest Restaurant Gameplay Video" width="70%">
   </a>
 </p>
